@@ -1,23 +1,64 @@
-# Getting Started with Create React App
+# Country Capital Match Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+This project is a match game involving countries and their capitals. The idea is to select two cards and make a match. If you make a match, the card turns green. If you make a mistake, the card turns red. The game allows you to make up to three mistakes. If you select a card, it turns blue. At the end, if you match all the pairs, the game ends and you will have won the game.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Select two cards to make a match between a country and its capital.
+- Matched cards turn green.
+- Unmatched cards turn red.
+- You can make up to three mistakes.
+- The selected card turns blue while you are making a match.
+- Win the game by matching all the pairs correctly.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+To install and run this project locally, follow these steps:
 
-### `npm test`
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/your-username/country-capital-match-game.git
+    ```
+2. Navigate to the project directory:
+    ```sh
+    cd country-capital-match-game
+    ```
+3. Install the dependencies:
+    ```sh
+    npm install
+    ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Usage
+
+To start the game, run:
+```sh
+npm start
+```
+## Technologies Used
+
+- React v18.3.1
+- npm
+- React Redux Toolkit for state management
+- Docker for building the project image
+- Docker version 25.0.3
+- Fetch API for data consumption from the following public API (no external libraries used):
+  - [https://restcountries.com/v3.1/all](https://restcountries.com/v3.1/all)
+- Functional components with TypeScript
+
+## How to execute the project with docker
+1. **Ensure Docker Version 25.0.3 Installed:**
+   Verify that Docker version 25.0.3 is installed on your system. You can check this by running:
+   ```sh
+   docker --version
+2. **Use the following command to build your Docker image named `countries-match`**
+```sh
+docker build -t countries-match . --load
+```
+3.**Start a Docker container named ```countries-match``` and map port 3003 on your local machine to port 3003 inside the container: ```sh
+docker run -p 3003:3003 countries-match
+```
 
 ### `npm run build`
 

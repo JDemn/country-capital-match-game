@@ -1,10 +1,14 @@
+import { config } from '../../config';
+import { stagingController }  from '../../utils/stagingController'
 /**
  * @description get countries data from free api
  * @return {Object} countries data or error message
  */
+
+let host = stagingController();
 export const getFakeDataProvider = async () =>{
     try {
-        const response = await fetch('https://restcountries.com/v3.1/all');
+        const response = await fetch(`${(host?.localhost)? config?.REACT_APP_COUNTRIES_APP : config?.REACT_APP_PRODUCTIONSERVER}/v3.1/all`);
         const countriesData = await response.json();
         
         const countriesAndCapitals = countriesData.slice(0, 10).reduce((acc: { [country: string]: string }, country: any) => {
