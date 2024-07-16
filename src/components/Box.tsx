@@ -1,15 +1,13 @@
+import { useEffect } from "react"
 import { Card, CardContent, Grid, Typography, Button, Alert } from "@mui/material"
-import Snackbar from '@mui/material/Snackbar';
-
-import { Item } from "../atoms/Item"
-
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
-import { setClicked, setOff } from "../store/slides"
 
-import { useEffect, useState } from "react"
 import { useMatchGame } from "../customHooks/useMatchGame"
 import { getFakeData } from "../store/thunk"
+import { TypographyAtom } from "../atoms/TypographyAtom";
+import { SnackAtom } from "../atoms/SnackAtom";
+import { Item } from "../atoms/Item"
 
 export const Box = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +25,7 @@ export const Box = () => {
         unmachedList,
         selectionOne,
         selectionTwo,
-        disableClick
+        disableClick,
     } = useMatchGame()
 
     useEffect(() => {
@@ -61,15 +59,13 @@ export const Box = () => {
                                 onClick={() => handleClick(country)}
                             >
                                 <CardContent>
-                                    <Typography component="div"
-                                        sx={{
-                                            color: unmachedList && unmachedList[country] ? 'white' :
-                                                matchesList && matchesList[country] ? 'white' :
-                                                    (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? 'white' : 'black'
-                                        }}
-                                    >
+                                    <TypographyAtom styles={{
+                                        color: unmachedList && unmachedList[country] ? 'white' :
+                                            matchesList && matchesList[country] ? 'white' :
+                                                (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? 'white' : 'black'
+                                    }}>
                                         <Item name={country} />
-                                    </Typography>
+                                    </TypographyAtom>
                                 </CardContent>
                             </Card>
                             <Card
@@ -84,29 +80,29 @@ export const Box = () => {
                                 onClick={() => handleClick(capital as string)}
                             >
                                 <CardContent>
-                                    <Typography component="div"
-                                        sx={{
+                                    <TypographyAtom styles={
+                                        {
                                             color: unmachedList && Object.values(unmachedList).includes(capital as string) ? 'white' :
                                                 matchesList && Object.values(matchesList).includes(capital as string) ? 'white' :
                                                     (selectionTwo === capital || selectionTwo === country) ? 'white' : 'black'
-                                        }}
-                                    >
+                                        }
+                                    }>
                                         <Item name={capital as string} />
-                                    </Typography>
+                                    </TypographyAtom>
                                 </CardContent>
                             </Card>
                         </Grid>
                     ))
                 ) : (
-                    <Snackbar
-                        open
-                        autoHideDuration={6000}
-                        onClose={() => { }}
+                    <SnackAtom
+                        isOpen={true}
+                        duration={6000}
+                        closed={() => { }}
                     >
                         <Alert severity="error" sx={{ width: '100%' }}>
                             No data available
                         </Alert>
-                    </Snackbar>
+                    </SnackAtom>
                 )}
             </Grid>
 

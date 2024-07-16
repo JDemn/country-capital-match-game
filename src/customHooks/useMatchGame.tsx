@@ -4,7 +4,7 @@ import { CountriesType, MachesList } from "../types/types";
 import { useDispatch , useSelector} from 'react-redux';
 import { AppDispatch, RootState } from "../store/store";
 import { getFakeData } from "../store/thunk";
-import { MatchGameProps } from "../interfaces/interfaces";
+
 import { setClicked, setOff } from "../store/slides";
 
 /**
@@ -28,6 +28,7 @@ export const useMatchGame =()=>{
     const [selectionOne, setSelectionOne] = useState<string | null>(null);
     const [selectionTwo, setSelectionTwo] = useState<string | null>(null);
     const [disableClick, setDisableClick] = useState<boolean>(false);
+    const [currentSelection, setCurrentSelection] = useState<string | null>(null);
 
     useEffect(()=>{
         if (Object.entries(data).length === 0) {
@@ -58,7 +59,6 @@ export const useMatchGame =()=>{
                 ...prevMatchesList,
                 [country as string]: capital!
             }));
-            console.log("maches list",matchesList)
         } else {
             setErrors((prevErrors : number) => {                
                 const newErrors = prevErrors + 1;
@@ -70,8 +70,7 @@ export const useMatchGame =()=>{
             setUnMachedList(( prevList : CountriesType) =>({
                 ...prevList,
                 [country as string]: capital!
-            }))
-            console.log("Un mached",unmachedList)
+            }));
         }
     };
     const handleRestart = () => {
@@ -82,6 +81,7 @@ export const useMatchGame =()=>{
         setUnMachedList({});
     };
     const handleClick = (selection: string) => {
+        setCurrentSelection(selection);
         if (disableClick) return;
         if (selectionOne === null) {
             setSelectionOne(selection);
@@ -109,6 +109,7 @@ export const useMatchGame =()=>{
         unmachedList,
         selectionOne,
         selectionTwo,
-        disableClick
+        disableClick,
+        currentSelection
     }
 }

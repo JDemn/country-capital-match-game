@@ -43,6 +43,8 @@ npm start
 - React Redux Toolkit for state management
 - Docker for building the project image
 - Docker version 25.0.3
+- nginx
+- shell script
 - Fetch API for data consumption from the following public API (no external libraries used):
   - [https://restcountries.com/v3.1/all](https://restcountries.com/v3.1/all)
 - Functional components with TypeScript
@@ -56,7 +58,8 @@ npm start
 ```sh
 docker build -t countries-match . --load
 ```
-3.**Start a Docker container named ```countries-match``` and map port 3003 on your local machine to port 3003 inside the container: ```sh
+3.**Start a Docker container named `countries-match` and map port 3003 on your local machine to port 3003 inside the container: ** 
+```sh
 docker run -p 3003:3003 countries-match
 ```
 
