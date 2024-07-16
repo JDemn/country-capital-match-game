@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { countriesAndCapitals } from "../db/db";
+
 import { CountriesType, MachesList } from "../types/types";
 import { useDispatch , useSelector} from 'react-redux';
 import { AppDispatch, RootState } from "../store/store";
 import { getFakeData } from "../store/thunk";
 import { MatchGameProps } from "../interfaces/interfaces";
+import { setClicked, setOff } from "../store/slides";
 
 export const useMatchGame =()=>{
     const dispatch = useDispatch<AppDispatch>();
@@ -17,6 +18,10 @@ export const useMatchGame =()=>{
     const [matchesList, setMachesList] = useState<MachesList>({})
     const [unmachedList, setUnMachedList] = useState<CountriesType>({})
     
+    const [selectionOne, setSelectionOne] = useState<string | null>(null);
+    const [selectionTwo, setSelectionTwo] = useState<string | null>(null);
+    const [disableClick, setDisableClick] = useState<boolean>(false);
+
     useEffect(()=>{
         if (Object.entries(data).length === 0) {
             dispatch(getFakeData());
@@ -69,13 +74,34 @@ export const useMatchGame =()=>{
         setMachesList({});
         setUnMachedList({});
     };
+    const handleClick = (selection: string) => {
+        if (disableClick) return;
+        if (selectionOne === null) {
+            setSelectionOne(selection);
+            dispatch(setClicked());
+        } else if (selectionOne !== null && selectionTwo === null) {
+            setSelectionTwo(selection);
+            setDisableClick(true)
+            setTimeout(() => {
+                findCapital(selectionOne, selection);
+                setSelectionOne(null);
+                setSelectionTwo(null);
+                setDisableClick(false);
+                dispatch(setOff());
+            }, 1000);
+        }
+    };
     return{
         findCapital,
         handleRestart,
+        handleClick,
         matches,
         errors,
         gameOver,
         matchesList,
-        unmachedList
+        unmachedList,
+        selectionOne,
+        selectionTwo,
+        disableClick
     }
 }

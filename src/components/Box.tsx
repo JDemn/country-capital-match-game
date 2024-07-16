@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
 import { setClicked, setOff } from "../store/slides"
 
-import { countriesAndCapitals } from "../db/db"
 import { useEffect, useState } from "react"
 import { useMatchGame } from "../customHooks/useMatchGame"
 import { getFakeData } from "../store/thunk"
@@ -16,11 +15,19 @@ export const Box = () => {
     const { status, data, errorMsg } = useSelector(
         (state: RootState) => state.getData
     )
-    const [selectionOne, setSelectionOne] = useState<string | null>(null);
-    const [selectionTwo, setSelectionTwo] = useState<string | null>(null);
-    const [disableClick, setDisableClick] = useState<boolean>(false);
+    
 
-    const { findCapital, gameOver, matches, handleRestart, matchesList, unmachedList } = useMatchGame()
+    const {
+        handleClick, 
+        handleRestart, 
+        gameOver, 
+        matches, 
+        matchesList, 
+        unmachedList,
+        selectionOne, 
+        selectionTwo, 
+        disableClick
+    } = useMatchGame()
 
     useEffect(() => {
         if (Object.entries(data).length === 0) {
@@ -28,23 +35,7 @@ export const Box = () => {
         }
     }, [data, dispatch])
 
-    const handleClick = (selection: string) => {
-        if (disableClick) return;
-        if (selectionOne === null) {
-            setSelectionOne(selection);
-            dispatch(setClicked());
-        } else if (selectionOne !== null && selectionTwo === null) {
-            setSelectionTwo(selection);
-            setDisableClick(true)
-            setTimeout(() => {
-                findCapital(selectionOne, selection);
-                setSelectionOne(null);
-                setSelectionTwo(null);
-                setDisableClick(false);
-                dispatch(setOff());
-            }, 1000);
-        }
-    };
+    
 
     return (
         <Grid>

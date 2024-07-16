@@ -1,4 +1,3 @@
-import { countriesAndCapitals } from "../../db/db"
 import { CountriesType } from "../../types/types"
 
 export const getFakeDataProvider = async () =>{
