@@ -1,5 +1,7 @@
-import { CountriesType } from "../../types/types"
-
+/**
+ * @description get countries data from free api
+ * @return {Object} countries data or error message
+ */
 export const getFakeDataProvider = async () =>{
     try {
         const response = await fetch('https://restcountries.com/v3.1/all');
@@ -11,7 +13,6 @@ export const getFakeDataProvider = async () =>{
             return acc;
         }, {});
 
-        console.log(countriesAndCapitals);
         return {
             ok: true,
             countriesAndCapitals

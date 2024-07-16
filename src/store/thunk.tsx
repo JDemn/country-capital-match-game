@@ -1,6 +1,11 @@
 import { AppDispatch } from "./store";
 import { getting, failure, getData } from './slides'
 import { getFakeDataProvider } from "./provider/getFakeDataProvider";
+
+/**
+ * @description Handle get countries data and update the global state
+ * execute the actions
+ */
 export const getFakeData =()=>{
     return async (dispatch: AppDispatch) => {
         dispatch({

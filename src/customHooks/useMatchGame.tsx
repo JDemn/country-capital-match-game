@@ -7,6 +7,13 @@ import { getFakeData } from "../store/thunk";
 import { MatchGameProps } from "../interfaces/interfaces";
 import { setClicked, setOff } from "../store/slides";
 
+/**
+ * @description Custom hook for managing the match game logic.
+ * Manages state for matches, errors, game over status, and lists of matches/unmatched pairs.
+ * Provides methods for finding capitals, handling game restart, and click handling.
+ * @returns Object with methods and state variables for managing the match game.
+ */
+
 export const useMatchGame =()=>{
     const dispatch = useDispatch<AppDispatch>();
     const data : CountriesType  = useSelector(
