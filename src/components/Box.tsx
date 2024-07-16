@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material"
+import { Card, CardContent, Grid, Typography, Button } from "@mui/material"
 
 import { Item } from "../atoms/Item"
 
@@ -15,17 +15,17 @@ export const Box = () => {
     const { status, data, errorMsg } = useSelector(
         (state: RootState) => state.getData
     )
-    
 
     const {
-        handleClick, 
-        handleRestart, 
-        gameOver, 
-        matches, 
-        matchesList, 
+        handleClick,
+        handleRestart,
+        gameOver,
+        matches,
+        errors,
+        matchesList,
         unmachedList,
-        selectionOne, 
-        selectionTwo, 
+        selectionOne,
+        selectionTwo,
         disableClick
     } = useMatchGame()
 
@@ -33,12 +33,18 @@ export const Box = () => {
         if (Object.entries(data).length === 0) {
             dispatch(getFakeData());
         }
-    }, [data, dispatch])
+        if (gameOver) {
+            alert("You lost");
+        }
 
-    
+        if (matches === Object.keys(data).length && !gameOver) {
+            alert("You won!");
+        }
+
+    }, [data, dispatch, matches, gameOver])
 
     return (
-        <Grid>
+        <>
             <Grid container spacing={2}>
                 {Object.entries(data).map(([country, capital]) => (
                     <Grid key={country} item xs={12} sm={6} md={4} lg={3}>
@@ -90,16 +96,26 @@ export const Box = () => {
                     </Grid>
                 ))}
             </Grid>
-            {gameOver && (
-                <div>
-                    <Typography variant="h6" color="error">You lost.</Typography>
-                    <button onClick={handleRestart}>Reiniciar juego</button>
-                </div>
-            )}
-            {matches === Object.keys(data).length && !gameOver && (
-                <Typography variant="h6" color="primary">Winner</Typography>
-            )}
-        </Grid>
+            <Typography
+                variant="h3"
+                sx={{
+                    marginBottom: '24px',
+                    marginTop: '28px',
+                    fontWeigth: 100,
+                    color: 'red',
+                    marginLeft: '40px'
+                }} >
+                Errors : {errors}
+            </Typography>
+            <Button
+                onClick={handleRestart}
+                variant="contained"
+                color="primary"
+                sx={{ marginLeft: '20px' }}
+            >
+                Reset
+            </Button>
+        </>
     );
 
 }

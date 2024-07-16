@@ -13,7 +13,7 @@ export const dataSlide = createSlice({
         },
         getData: (state, { payload }) => {
           state.status = 'success';
-          state.data = payload;
+          state.data = payload; 
         },
         failure: (state, { payload }) => {
             state.status = 'failure';            
