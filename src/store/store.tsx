@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { isClickedSlide } from './slides'
+import { dataSlide, isClickedSlide } from './slides'
 
 export const store = configureStore({
   reducer: {
-    clicked : isClickedSlide.reducer
+    clicked : isClickedSlide.reducer,
+    getData : dataSlide.reducer
   },
 })
 

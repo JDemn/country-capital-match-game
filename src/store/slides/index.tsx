@@ -1,1 +1,2 @@
-export * from './isClickedSlide'
+export * from './isClickedSlide';
+export * from './dataSlide';

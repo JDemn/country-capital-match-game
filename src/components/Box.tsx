@@ -1,38 +1,39 @@
 import { Card, CardContent, Grid, Typography } from "@mui/material"
 
-import { Item } from "./Item"
-import { useIsClicked } from "../customHooks/useIsClicked"
-import { useDispatch} from "react-redux"
+import { Item } from "../atoms/Item"
+
+import { useDispatch , useSelector} from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
 import { setClicked, setOff } from "../store/slides"
 
 import { countriesAndCapitals } from "../db/db"
 import { useEffect, useState } from "react"
 import { useMatchGame } from "../customHooks/useMatchGame"
-
-
-
-const cardStyles = {
-    minWidth: 200,
-    margin: 10,
-}
+import { getFakeData } from "../store/thunk"
 
 export const Box = () => {
     const dispatch = useDispatch<AppDispatch>();
-    
+    const {status ,data, errorMsg} = useSelector(
+        (state: RootState) => state.getData 
+    )
     const [selectionOne, setSelectionOne] = useState<string | null >(null);
     const [selectionTwo, setSelectionTwo] = useState<string | null>(null);
     const [disableClick, setDisableClick] = useState<boolean>(false);
     
     const { findCapital, gameOver, matches, handleRestart ,matchesList, unmachedList } = useMatchGame()
 
+    useEffect(()=>{
+        if (Object.entries(data).length === 0) {
+            dispatch(getFakeData());
+        }
+    },[data, dispatch])
 
     const handleClick = ( selection: string ) => {
         if (disableClick) return;
         if ( selectionOne === null ) {
             setSelectionOne(selection);
             dispatch(setClicked());
-        } else if (selectionOne !== null && selection !== selectionOne) {
+        } else if ( selectionOne !== null && selectionTwo === null ) {
             setSelectionTwo(selection);
             setDisableClick(true)
             setTimeout(() => {
@@ -47,15 +48,15 @@ export const Box = () => {
 
     return (
         <div>
-            {!gameOver && matches !== Object.keys(countriesAndCapitals).length && (
+            {!gameOver && matches !== Object.keys(data).length && (
                 <Grid container spacing={2}>
-                    {Object.entries(countriesAndCapitals).map(([country, capital]) => (
+                    {Object.entries(data).map(([country, capital]) => (
                         <Grid key={country} item xs={12} sm={6} md={4} lg={3}>
-                            <Card                                
+                            <Card
                                 sx={{
-                                    backgroundColor: matchesList[country] ? '#00FF00' : 
-                                                     unmachedList[country] ? '#FF0000' :
-                                                     (selectionOne === country || selectionTwo === country) ? '#0000FF' : 'white',
+                                    backgroundColor: matchesList && matchesList[country] ? '#00FF00' :
+                                                     unmachedList && unmachedList[country] ? '#FF0000' :
+                                                     (selectionOne === country || selectionTwo === capital) ? '#0000FF' : 'white',
                                     cursor: !disableClick ? 'pointer' : 'default'
                                 }}
                                 onClick={() => handleClick(country)}
@@ -66,19 +67,19 @@ export const Box = () => {
                                     </Typography>
                                 </CardContent>
                             </Card>
-                            <Card                                
+                            <Card
                                 sx={{
-                                    backgroundColor: Object.values(matchesList).includes(capital) ? '#00FF00' : 
-                                                     Object.values(unmachedList).includes(capital) ? '#FF0000' :
-                                                     (selectionOne === capital || selectionTwo === capital) ? '#0000FF' : 'white',
+                                    backgroundColor: matchesList && Object.values(matchesList).includes(capital as string) ? '#00FF00' :
+                                                     unmachedList && Object.values(unmachedList).includes(capital as string) ? '#FF0000' :
+                                                     ( selectionTwo === capital || selectionTwo === country ) ? '#0000FF' : 'white',
                                     cursor: !disableClick ? 'pointer' : 'default',
                                     marginTop: '12px'
                                 }}
-                                onClick={() => handleClick(capital)}
+                                onClick={() => handleClick(capital as string)}
                             >
                                 <CardContent>
                                     <Typography variant="h5" component="div">
-                                        <Item name={capital} />
+                                        <Item name={capital as string} />
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -86,7 +87,7 @@ export const Box = () => {
                     ))}
                 </Grid>
             )}
-            {matches === Object.keys(countriesAndCapitals).length && (
+            {matches === Object.keys(data).length && (
                 <Typography variant="h6" color="primary">¡Felicidades! Has completado todos los matches.</Typography>
             )}
             {gameOver && (

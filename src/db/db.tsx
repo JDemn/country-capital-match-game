@@ -1,6 +1,6 @@
 import { CountriesType } from "../types/types";
 
-export const countriesAndCapitals : CountriesType= {
+export const countriesAndCapitals : CountriesType & { [country: string]: string } = {
     "Afghanistan": "Kabul",
     "Albania": "Tirana",
     "Algeria": "Algiers",

@@ -1,8 +1,8 @@
-import { Gridd } from "./components/Gridd"
+import { Box } from "./components/Box"
 
 export const MatchGame =()=>{
 
     return (
-        <Gridd />        
+        <Box/>        
     )
 }
