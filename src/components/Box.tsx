@@ -2,7 +2,7 @@ import { Card, CardContent, Grid, Typography } from "@mui/material"
 
 import { Item } from "../atoms/Item"
 
-import { useDispatch , useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch, RootState } from "../store/store"
 import { setClicked, setOff } from "../store/slides"
 
@@ -13,27 +13,27 @@ import { getFakeData } from "../store/thunk"
 
 export const Box = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const {status ,data, errorMsg} = useSelector(
-        (state: RootState) => state.getData 
+    const { status, data, errorMsg } = useSelector(
+        (state: RootState) => state.getData
     )
-    const [selectionOne, setSelectionOne] = useState<string | null >(null);
+    const [selectionOne, setSelectionOne] = useState<string | null>(null);
     const [selectionTwo, setSelectionTwo] = useState<string | null>(null);
     const [disableClick, setDisableClick] = useState<boolean>(false);
-    
-    const { findCapital, gameOver, matches, handleRestart ,matchesList, unmachedList } = useMatchGame()
 
-    useEffect(()=>{
+    const { findCapital, gameOver, matches, handleRestart, matchesList, unmachedList } = useMatchGame()
+
+    useEffect(() => {
         if (Object.entries(data).length === 0) {
             dispatch(getFakeData());
         }
-    },[data, dispatch])
+    }, [data, dispatch])
 
-    const handleClick = ( selection: string ) => {
+    const handleClick = (selection: string) => {
         if (disableClick) return;
-        if ( selectionOne === null ) {
+        if (selectionOne === null) {
             setSelectionOne(selection);
             dispatch(setClicked());
-        } else if ( selectionOne !== null && selectionTwo === null ) {
+        } else if (selectionOne !== null && selectionTwo === null) {
             setSelectionTwo(selection);
             setDisableClick(true)
             setTimeout(() => {
@@ -43,59 +43,72 @@ export const Box = () => {
                 setDisableClick(false);
                 dispatch(setOff());
             }, 1000);
-        } 
+        }
     };
 
     return (
-        <div>
-            {!gameOver && matches !== Object.keys(data).length && (
-                <Grid container spacing={2}>
-                    {Object.entries(data).map(([country, capital]) => (
-                        <Grid key={country} item xs={12} sm={6} md={4} lg={3}>
-                            <Card
-                                sx={{
-                                    backgroundColor: matchesList && matchesList[country] ? '#00FF00' :
-                                                     unmachedList && unmachedList[country] ? '#FF0000' :
-                                                     (selectionOne === country || selectionTwo === capital) ? '#0000FF' : 'white',
-                                    cursor: !disableClick ? 'pointer' : 'default'
-                                }}
-                                onClick={() => handleClick(country)}
-                            >
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        <Item name={country} />
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                            <Card
-                                sx={{
-                                    backgroundColor: matchesList && Object.values(matchesList).includes(capital as string) ? '#00FF00' :
-                                                     unmachedList && Object.values(unmachedList).includes(capital as string) ? '#FF0000' :
-                                                     ( selectionTwo === capital || selectionTwo === country ) ? '#0000FF' : 'white',
-                                    cursor: !disableClick ? 'pointer' : 'default',
-                                    marginTop: '12px'
-                                }}
-                                onClick={() => handleClick(capital as string)}
-                            >
-                                <CardContent>
-                                    <Typography variant="h5" component="div">
-                                        <Item name={capital as string} />
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            )}
-            {matches === Object.keys(data).length && (
-                <Typography variant="h6" color="primary">¡Felicidades! Has completado todos los matches.</Typography>
-            )}
+        <Grid>
+            <Grid container spacing={2}>
+                {Object.entries(data).map(([country, capital]) => (
+                    <Grid key={country} item xs={12} sm={6} md={4} lg={3}>
+                        <Card
+                            sx={{
+                                backgroundColor: matchesList && matchesList[country] ? '#00FF00' :
+                                    unmachedList && unmachedList[country] ? '#FF0000' :
+                                        (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? '#0000FF' : 'white',
+                                cursor: !disableClick && !gameOver ? 'pointer' : 'default',
+                                pointerEvents: gameOver ? 'none' : 'auto'
+                            }}
+                            onClick={() => handleClick(country)}
+                        >
+                            <CardContent>
+                                <Typography component="div"
+                                    sx={{
+                                        color: unmachedList && unmachedList[country] ? 'white' :
+                                            matchesList && matchesList[country] ? 'white' :
+                                                (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? 'white' : 'black'
+                                    }}
+                                >
+                                    <Item name={country} />
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                        <Card
+                            sx={{
+                                backgroundColor: matchesList && Object.values(matchesList).includes(capital as string) ? '#00FF00' :
+                                    unmachedList && Object.values(unmachedList).includes(capital as string) ? '#FF0000' :
+                                        (selectionTwo === capital || selectionTwo === country) ? '#0000FF' : 'white',
+                                cursor: !disableClick && !gameOver ? 'pointer' : 'default',
+                                marginTop: '12px',
+                                pointerEvents: gameOver ? 'none' : 'auto'
+                            }}
+                            onClick={() => handleClick(capital as string)}
+                        >
+                            <CardContent>
+                                <Typography component="div"
+                                    sx={{
+                                        color: unmachedList && Object.values(unmachedList).includes(capital as string) ? 'white' :
+                                            matchesList && Object.values(matchesList).includes(capital as string) ? 'white' :
+                                                (selectionTwo === capital || selectionTwo === country) ? 'white' : 'black'
+                                    }}
+                                >
+                                    <Item name={capital as string} />
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
             {gameOver && (
                 <div>
-                    <Typography variant="h6" color="error">Has cometido 3 errores. Reinicia el juego para continuar.</Typography>
+                    <Typography variant="h6" color="error">You lost.</Typography>
                     <button onClick={handleRestart}>Reiniciar juego</button>
                 </div>
             )}
-        </div>
+            {matches === Object.keys(data).length && !gameOver && (
+                <Typography variant="h6" color="primary">Winner</Typography>
+            )}
+        </Grid>
     );
+
 }
