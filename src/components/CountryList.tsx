@@ -54,7 +54,7 @@ export const CountryList = () => {
                                 styles={{
                                     backgroundColor: matchesList && matchesList[country] ? '#00FF00' :
                                         unmachedList && unmachedList[country] ? '#FF0000' :
-                                            (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? '#0000FF' : 'white',
+                                        (selectionOne === country || selectionTwo === country) ? '#0000FF' : 'white',
                                     cursor: !disableClick && !gameOver ? 'pointer' : 'default',
                                     pointerEvents: gameOver ? 'none' : 'auto',
                                     marginTop: '18px'
@@ -66,7 +66,7 @@ export const CountryList = () => {
                                     <TypographyAtom styles={{
                                         color: unmachedList && unmachedList[country] ? 'white' :
                                             matchesList && matchesList[country] ? 'white' :
-                                                (selectionOne === country || selectionTwo === capital || selectionOne === capital || selectionTwo === country) ? 'white' : 'black'
+                                            (selectionOne === country || selectionTwo === country) ? 'white' : 'black'
                                     }}>
                                         <Item name={country} />
                                     </TypographyAtom>
@@ -76,7 +76,7 @@ export const CountryList = () => {
                                 styles={{
                                     backgroundColor: matchesList && Object.values(matchesList).includes(capital as string) ? '#00FF00' :
                                         unmachedList && Object.values(unmachedList).includes(capital as string) ? '#FF0000' :
-                                            (selectionTwo === capital || selectionTwo === country) ? '#0000FF' : 'white',
+                                        (selectionOne === capital || selectionTwo === capital) ? '#0000FF' : 'white',
                                     cursor: !disableClick && !gameOver ? 'pointer' : 'default',
                                     marginTop: '12px',
                                     pointerEvents: gameOver ? 'none' : 'auto'
@@ -90,7 +90,7 @@ export const CountryList = () => {
                                             {
                                                 color: unmachedList && Object.values(unmachedList).includes(capital as string) ? 'white' :
                                                     matchesList && Object.values(matchesList).includes(capital as string) ? 'white' :
-                                                        (selectionTwo === capital || selectionTwo === country) ? 'white' : 'black'
+                                                    (selectionOne === capital || selectionTwo === capital) ? 'white' : 'black'
                                             }
                                         }
                                     >
