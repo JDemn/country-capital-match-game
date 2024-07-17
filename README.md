@@ -13,7 +13,36 @@ This project is a match game involving countries and their capitals. The idea is
 - The selected card turns blue while you are making a match.
 - Win the game by matching all the pairs correctly.
 
-## Installation
+## Technologies Used
+
+- React v18.3.1
+- npm
+- React Redux Toolkit for state management
+- Docker for building the project image
+- Docker version 25.0.3
+- nginx
+- shell script
+- Fetch API for data consumption from the following public API (no external libraries used):
+  - [https://restcountries.com/v3.1/all](https://restcountries.com/v3.1/all)
+- Functional components with TypeScript
+
+## How to execute the project with docker
+1. **Ensure Docker Version 25.0.3 Installed:**
+   Verify that Docker version 25.0.3 is installed on your system. You can check this by running:
+   ```sh
+   docker --version
+2. **Dont forget Open Docker desktop**
+    To ensure all the docker commands listed below works well, make sure you already has docker desktop opened.
+3. **Use the following command to build your Docker image named `countries-match`**
+```sh
+docker build -t countries-match . --load
+```
+3.**Start a Docker container named `countries-match` and map port 3003 on your local machine to port 3003 inside the container: ** 
+```sh
+docker run -p 3003:3003 countries-match
+```
+
+## Normal installation without docker Installation
 
 To install and run this project locally, follow these steps:
 
@@ -35,32 +64,6 @@ To install and run this project locally, follow these steps:
 To start the game, run:
 ```sh
 npm start
-```
-## Technologies Used
-
-- React v18.3.1
-- npm
-- React Redux Toolkit for state management
-- Docker for building the project image
-- Docker version 25.0.3
-- nginx
-- shell script
-- Fetch API for data consumption from the following public API (no external libraries used):
-  - [https://restcountries.com/v3.1/all](https://restcountries.com/v3.1/all)
-- Functional components with TypeScript
-
-## How to execute the project with docker
-1. **Ensure Docker Version 25.0.3 Installed:**
-   Verify that Docker version 25.0.3 is installed on your system. You can check this by running:
-   ```sh
-   docker --version
-2. **Use the following command to build your Docker image named `countries-match`**
-```sh
-docker build -t countries-match . --load
-```
-3.**Start a Docker container named `countries-match` and map port 3003 on your local machine to port 3003 inside the container: ** 
-```sh
-docker run -p 3003:3003 countries-match
 ```
 
 ### `npm run build`
