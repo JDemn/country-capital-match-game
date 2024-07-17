@@ -1,7 +1,7 @@
 
-import { ReactElement, ReactNode } from 'react';
+import { MouseEventHandler, ReactElement, ReactNode } from 'react';
 import { SxProps } from '@mui/material';
-import { CountriesType } from '../types/types'
+import { CountriesType, MachesList } from '../types/types'
 export interface ITEM_CHILD_ELEMENT {
     name : string
 }
@@ -33,3 +33,12 @@ export interface SNACKBAR_MATERIAL {
     duration : number,
     children : ReactElement<any, any> | undefined
 }
+
+export interface CARD_INTERFACE {
+    styles : SxProps,
+    children : ReactNode
+    event : ( value : string )=> void,
+    value: string;
+}
+
+export type CONTENT_CARD = Omit<CARD_INTERFACE, 'event'|'styles'|'value'>;

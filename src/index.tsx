@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+import MatchGame from './MatchGame';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from 'react-redux';
@@ -13,7 +12,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={ store }>
-      <App />
+      <MatchGame />
     </Provider>
   </React.StrictMode>
 );

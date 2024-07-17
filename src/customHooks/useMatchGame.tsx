@@ -80,7 +80,7 @@ export const useMatchGame =()=>{
         setMachesList({});
         setUnMachedList({});
     };
-    const handleClick = (selection: string) => {
+    const handleClick = (selection: string) => {        
         setCurrentSelection(selection);
         if (disableClick) return;
         if (selectionOne === null) {

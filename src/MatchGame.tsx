@@ -1,8 +1,10 @@
-import { Box } from "./components/Box"
+import React from 'react';
+import { CountryList } from './components/CountryList';
 
-export const MatchGame =()=>{
-
-    return (
-        <Box/>        
-    )
+function MatchGame() {
+  return (
+    <CountryList/>
+  );
 }
+
+export default MatchGame;
